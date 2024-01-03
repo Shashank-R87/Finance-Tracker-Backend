@@ -22,7 +22,9 @@ origins = [
     "http://localhost:8000",
     "http://localhost:3000",
     "https://personal-finance-tracker-web.vercel.app/",
-    "http://personal-finance-tracker-web.vercel.app/"
+    "http://personal-finance-tracker-web.vercel.app/",
+    "https://finance-tracker-api-python.vercel.app/",
+    "http://finance-tracker-api-python.vercel.app/",
 ]
 
 
