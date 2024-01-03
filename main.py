@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
-from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
 import firebase_admin
@@ -18,14 +18,14 @@ firebase_admin.initialize_app(
 
 ref = db.reference("/users")
 
-origins = [
-    "http://localhost:8000",
-    "http://localhost:3000",
-    "https://personal-finance-tracker-web.vercel.app/",
-    "http://personal-finance-tracker-web.vercel.app/",
-    "https://finance-tracker-api-python.vercel.app/",
-    "http://finance-tracker-api-python.vercel.app/",
-]
+# origins = [
+#     "http://localhost:8000",
+#     "http://localhost:3000",
+#     "https://personal-finance-tracker-web.vercel.app/",
+#     "http://personal-finance-tracker-web.vercel.app/",
+#     "https://finance-tracker-api-python.vercel.app/",
+#     "http://finance-tracker-api-python.vercel.app/",
+# ]
 
 
 class Cash(BaseModel):
@@ -41,13 +41,13 @@ class Cash(BaseModel):
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 
 def sortDate(data):
