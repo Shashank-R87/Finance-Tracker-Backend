@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
-# from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
 import firebase_admin
@@ -41,13 +41,13 @@ class Cash(BaseModel):
 
 app = FastAPI()
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def sortDate(data):
@@ -161,17 +161,17 @@ async def get_flogs(uid: str, filtertype: str, label: str):
 @app.put("/report_download/{uid}")
 async def report_download(uid: str, request: Request):
     currentData = await request.json()
-    keys = ["Date", "Time", "Type", "Title", "Amount", "Description", "Category", "Payment Mode", ""]
-    values = [[str(i["date"]),i["time"],i["t"],i["title"],i["amount"],i["description"],i["category"],i["payment_mode"]] for i in currentData["data"]]
+    keys = ["Date", "Time", "Type", "Title", "Amount", "Description", "Category", "Payment Mode", "Bookmarked"]
+    values = [[str(i["date"]),i["time"],i["t"],i["title"],i["amount"],i["description"],i["category"],i["payment_mode"], "Yes" if i["marked"]=="true" else "No"] for i in currentData["data"]]
 
-    file = open(f"{uid}.csv", "w", newline="")
+    file = open(f"/tmp/{uid}.csv", "w", newline="")
     writer = csv.writer(file)
     writer.writerow(keys)
     writer.writerows(values)
     file.close()
 
     headers = {'Access-Control-Expose-Headers': 'Content-Disposition'}
-    return FileResponse(f"{uid}.csv", filename=f"{uid}.csv", headers=headers)
+    return FileResponse(f"/tmp/{uid}.csv", filename=f"{uid}.csv", headers=headers)
 
 @app.put("/set_goal/{uid}")
 async def set_goal(uid:str, request: Request):
